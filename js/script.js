@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	// Таймер
 
-	let deadline = '2019-01-09';
+	let deadline = '2019-12-09';
 
 	function getTimeRemaining(endtime) {
 		let t = Date.parse(endtime) - Date.parse(new Date()),
@@ -130,9 +130,10 @@ window.addEventListener('DOMContentLoaded', () => {
  		statusMessage.classList.add('status');
 
  	function sendForm(elem) {
- 		elem.addEventListener('submit',(e) =>) {
+ 		elem.addEventListener('submit', function(e){
  			e.preventDefault();
  			elem.appendChild(statusMessage);
+ 			;
 
  			let formData = new FormData(elem);
 
@@ -159,29 +160,126 @@ window.addEventListener('DOMContentLoaded', () => {
  							resolve();
  						} else {
  							reject();
- 						}
- 					}
+ 						};
+ 					};
 
- 					.request.send(data);
-
- 				})
+ 					request.send(data);
+ 				});
  			}
+
  		
- 		function clearInput() {
- 			let input = elem.getElementsByTagName('input');
+	 		function clearInput() {
+	 			let input = elem.getElementsByTagName('input');
 
- 			for(let i = 0; i < input.length; i++) {
-	 		input[i].value = '';
- 			}
- 		}
- 		postData(formData)
- 			.then(()=> statusMessage.innerHTML = message.loading)
- 			.then(()=> statusMessage.innerHTML = message.success)
- 			.catcn(()=> statusMessage.innerHTML = message.failure)
- 			.then(clearInput)
- 		}
+	 			for(let i = 0; i < input.length; i++) {
+		 		input[i].value = '';
+	 			};
+	 		};
+			postData(formData)
+				.then(()=> statusMessage.innerHTML = message.loading)
+				.then(()=> statusMessage.innerHTML = message.success)
+				.catch(()=> statusMessage.innerHTML = message.failure)
+				.then(clearInput)
+		});	
+ 	};
 
  	sendForm(form);
  	sendForm(contactForm);
+
+ 	//Слайдер
+
+ 	let slideIndex = 1,
+ 		slids = document.querySelectorAll('.slider-item'),
+ 		prev = document.querySelector('.prev'),
+ 		next = document.querySelector('.next'),
+ 		dotsWrap = document.querySelector('.slider-dots'),
+ 		dots = document.querySelectorAll('.dot');
+
+ 	showSlides(slideIndex);
+
+ 	function showSlides(n) {
+
+ 		if(n > slids.length) {
+ 			slideIndex = 1;
+ 		}
+ 		if(n < 1) {
+ 			slideIndex = slids.length;
+ 		}
+
+ 		slids.forEach((i) => i.style.display = 'none');
+ 		dots.forEach((i) => i.classList.remove('dot-active'));
+
+ 		slids[slideIndex - 1].style.display = 'block';
+ 		dots[slideIndex - 1].classList.add('dot-active');
  	}
+
+ 	function plusSlides(n) {
+ 		showSlides(slideIndex += n);
+ 	}
+ 	function currentSlide(n) {
+ 		showSlides(slideIndex = n);
+ 	}
+
+ 	prev.addEventListener('click', ()=>{
+ 		plusSlides(-1);
+ 	});
+ 	next.addEventListener('click', ()=>{
+ 		plusSlides(1);
+ 	});
+
+ 	dotsWrap.addEventListener('click', (e) => {
+ 		for(let i = 0; i < dots.length + 1; i++) {
+ 			if(e.target.classList.contains('dot') && e.target == dots[i-1]){
+ 				currentSlide(i);
+ 			}
+ 		}
+ 	})
+
+ 	//Калькулятор
+
+ 	let persons = document.querySelectorAll('.counter-block-input')[0],
+ 		restDays = document.querySelectorAll('.counter-block-input')[1],
+ 		place = document.getElementById('select'),
+ 		totalValue = document.getElementById('total'),
+ 		personsSum = 0,
+ 		daysSum = 0,
+ 		total = 0;
+
+ 	totalValue.innerHTML = 0;
+
+ 	persons.addEventListener('input', function() {
+ 		personsSum = +this.value;
+ 		total = daysSum * 4000 * personsSum;
+
+ 		if(restDays.value == '' || restDays.value == 0) {
+ 			totalValue.innerHTML = 0;
+ 		} else {
+ 			totalValue.innerHTML = total;
+ 		}
+
+ 	});
+
+ 	restDays.addEventListener('input', function() {
+ 		daysSum = +this.value;
+ 		total = daysSum * 4000 * personsSum;
+
+ 		if(persons.value == '' || persons.value == 0) {
+ 			totalValue.innerHTML = 0;
+ 		} else {
+ 			totalValue.innerHTML = total;
+ 		}
+
+ 	});
+	
+ 	place.addEventListener('change', function(){
+ 		if(restDays.value == '' || persons.value == '' || restDays.value == 0 || persons.value == 0) {
+ 			totalValue.innerHTML = 0;
+ 		} else {
+ 			let a = total;
+ 			totalValue.innerHTML = a * this.options[this.selectedIndex].value;
+ 		
+ 		}
+ 	
+ 	});
+
 });
