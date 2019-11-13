@@ -328,6 +328,53 @@ function slider () {
 
 /***/ }),
 
+/***/ "./js/parts/tabs.js":
+/*!**************************!*\
+  !*** ./js/parts/tabs.js ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function tabs() {
+
+	let tab = document.querySelectorAll('.info-header-tab'),
+		info = document.querySelector('.info-header'),
+		tabContent = document.querySelectorAll('.info-tabcontent');
+
+	function hideTabContent(a) {
+		for (let i = a; i < tabContent.length; i++) {
+			tabContent[i].classList.remove('show');
+			tabContent[i].classList.add('hide');
+		}
+	}
+
+	hideTabContent(1);
+
+	function showTabContent(b) {
+		if (tabContent[b].classList.contains('hide')) {
+			tabContent[b].classList.remove('hide');
+			tabContent[b].classList.add('show');
+		}
+	}
+
+	info.addEventListener('click', (event) => {
+		let target = event.target;
+		if (target && target.classList.contains('info-header-tab')) {
+			for (let i = 0; i < tab.length; i++) {
+				if (target == tab[i]) {
+					hideTabContent(0);
+					showTabContent(i);
+					break;
+				}
+			}
+		}
+	});
+}
+
+module.exports = tabs;
+
+/***/ }),
+
 /***/ "./js/parts/timer.js":
 /*!***************************!*\
   !*** ./js/parts/timer.js ***!
@@ -402,7 +449,7 @@ module.exports = timer;
 window.addEventListener('DOMContentLoaded', () => {
 	'use strict';
 
-let tabs = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module './js/parts/tabs.js'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())),
+let tabs = __webpack_require__(/*! ./parts/tabs.js */ "./js/parts/tabs.js"),
 	timer = __webpack_require__(/*! ./parts/timer.js */ "./js/parts/timer.js"),
 	modal = __webpack_require__(/*! ./parts/modal.js */ "./js/parts/modal.js"),
 	form = __webpack_require__(/*! ./parts/form.js */ "./js/parts/form.js"),

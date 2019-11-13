@@ -1,7 +1,7 @@
 window.addEventListener('DOMContentLoaded', () => {
 	'use strict';
 
-let tabs = require('./js/parts/tabs.js'),
+let tabs = require('./parts/tabs.js'),
 	timer = require('./parts/timer.js'),
 	modal = require('./parts/modal.js'),
 	form = require('./parts/form.js'),
